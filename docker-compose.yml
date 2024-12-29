@@ -103,21 +103,21 @@ services:
     volumes:
       - /Users/Sahar.Raz/WebstormProjects/DigitalWallet/mongo-data:/data/db
 
-##   User Service
-#  user_service_server:
-#    container_name: mongodb/mongodb-community-server:latest
-#    build:
-#      context: ./users
-#      dockerfile: Dockerfile
-#    ports:
-#      - "5001:5001"
-#    environment:
-#      PORT: 5001
-#      MONGO_URI: mongodb://root:root@mongodb-user:27017/userDb
-#    depends_on:
-#      - mongodb-user
-#    volumes:
-#      - ./users:/usr/src/app
+#   User Service
+  user_service_server:
+    container_name: user_service_server
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      PORT: 5001
+      MONGO_URI: mongodb://root:root@mongodb-user:27017/userDb
+    depends_on:
+      - mongodb-user
+    volumes:
+      - ./users:/usr/src/app
 
 
 #  # MongoDB for Transactions
