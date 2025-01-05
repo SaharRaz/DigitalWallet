@@ -18,6 +18,7 @@ router.post('/', validateSchema(createUserSchema), async (req, res) => {
     }
 });
 
+
 // Get all users
 router.get('/', async (req, res) => {
     try {

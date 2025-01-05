@@ -11,11 +11,11 @@ const app = express();
 app.use(express.json());
 
 // Routes
-app.use('/api/users', userRoutes);
+app.use('/users', userRoutes);
 
 // Start server
 connectDB().then(() => {
-    app.listen(5001, () => {
+    app.listen(5001,  '0.0.0.0',() => {
         console.log(`Users service running on port ${5001}`);
     });
 })

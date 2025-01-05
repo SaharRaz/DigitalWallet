@@ -28,7 +28,7 @@ const startServices = async () => {
     app.use('/notifications', notificationsRoutes);
 
     // Define ports for each service
-    const PORTS = [3000, 3001, 3002, 3003];
+    const PORTS = [5001, 5002, 5003, 5004];
 
     // Start an instance of the app for each service
     PORTS.forEach((port, index) => {

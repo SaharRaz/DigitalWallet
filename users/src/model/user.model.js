@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema(
     {
         name: { type: String, required: true, trim: true, index: true }, // Indexed field
         balance: { type: Number, required: true, default: 0 },
+        userId: { type: String, required: true, trim: true, index: true},
     },
     { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );

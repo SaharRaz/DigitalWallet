@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose the service port
-EXPOSE 5001
+EXPOSE 5002
 
 # Start the application
 CMD ["node", "src/index.js"]

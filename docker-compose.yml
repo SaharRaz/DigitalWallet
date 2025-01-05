@@ -1,99 +1,40 @@
+#version: "3.8"
+#
 #services:
-#  mongo:
+#  # MongoDB for Users
+#  mongodb-user:
 #    image: mongodb/mongodb-community-server:latest
 #    container_name: mongodb
 #    ports:
 #      - "27017:27017"
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: root
 #    volumes:
-#      - /Users/Sahar.Raz/WebstormProjects/DigitalWallet/mongo-data:/data/db
+#      - C:/Users/Sahar/WebstormProjects/DigitalWallet/mongo-data:/data/db
 #
-#
-#
-
-
-
-#  users:
+##   User Service
+#  user_service_server:
+#    container_name: user_service_server
 #    build:
 #      context: ./users
 #      dockerfile: Dockerfile
-#    container_name: users-service
-#    working_dir: /usr/src/app
 #    ports:
-#      - "3000:3000"
+#      - "5001:5001"
 #    environment:
-#      - PORT=3000
-#      - MONGO_URI=mongodb://mongo:27017/digitalWallet
+#      PORT: 5001
+#      MONGO_URI: mongodb://root:root@mongodb-user:27017/userDb
 #    depends_on:
-#      - mongo
+#      - mongodb-user
 #    volumes:
-#      - /Users/Sahar.Raz/WebstormProjects/DigitalWallet/users:/usr/src/app
-#
-#  notifications:
-#    build:
-#      context: ./notifications
-#      dockerfile: Dockerfile
-#    container_name: notifications-service
-#    working_dir: /usr/src/app
-#    ports:
-#      - "3003:3003"
-#    environment:
-#      - PORT=3003
-#      - MONGO_URI=mongodb://mongo:27017/digitalWallet
-#    depends_on:
-#      - mongo
-#    volumes:
-#      - /Users/Sahar.Raz/WebstormProjects/DigitalWallet/notifications:/usr/src/app
-#
-#  transactions:
-#    build:
-#      context: ./transactions
-#      dockerfile: Dockerfile
-#    container_name: transactions-service
-#    working_dir: /usr/src/app
-#    ports:
-#      - "3001:3001"
-#    environment:
-#      - PORT=3001
-#      - MONGO_URI=mongodb://mongo:27017/digitalWallet
-#    depends_on:
-#      - mongo
-#    volumes:
-#      - /Users/Sahar.Raz/WebstormProjects/transactions:/usr/src/app
-#
-#  groups:
-#    build:
-#      context: ./groups
-#      dockerfile: Dockerfile
-#    container_name: groups-service
-#    working_dir: /usr/src/app
-#    ports:
-#      - "3002:3002"
-#    environment:
-#      - PORT=3002
-#      - MONGO_URI=mongodb://mongo:27017/digitalWallet
-#    depends_on:
-#      - mongo
-#    volumes:
-#      - /Users/Sahar.Raz/WebstormProjects/groups:/usr/src/app
-#
-#volumes:
-#  mongo-data:
-#
-
-#    mongo:
-#    image: mongodb/mongodb-community-server:latest
-#    container_name: mongodb
-#    ports:
-#      - "27017:27017"
-#    volumes:
-#      - /Users/Sahar.Raz/WebstormProjects/DigitalWallet/mongo-data:/data/db
+#      - ./users:/usr/src/app
 
 version: "3.8"
 
 services:
-  # MongoDB for Users
+  # MongoDB Service for Users
   mongodb-user:
-    image: mongodb/mongodb-community-server:latest
+    image: mongo:6.0
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -101,9 +42,11 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - /Users/Sahar.Raz/WebstormProjects/DigitalWallet/mongo-data:/data/db
+      - /host_mnt/c/Users/Sahar/WebstormProjects/DigitalWallet/mongo-data:/data/db
+    networks:
+      - digital_wallet_network
 
-#   User Service
+  # User Service
   user_service_server:
     container_name: user_service_server
     build:
@@ -113,24 +56,57 @@ services:
       - "5001:5001"
     environment:
       PORT: 5001
-      MONGO_URI: mongodb://root:root@mongodb-user:27017/userDb
+      MONGO_URI: mongodb://root:root@mongodb-user:27017/userDb?authSource=admin
     depends_on:
       - mongodb-user
     volumes:
       - ./users:/usr/src/app
+    networks:
+      - digital_wallet_network
 
 
-#  # MongoDB for Transactions
-#  mongodb-transaction:
-#    image: mongo:latest
-#    container_name: mongodb-transaction
-#    ports:
-#      - "27018:27017"
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: root
-#    volumes:
-#      - ./transactionDb/db:/transactionDb/db
+  # MongoDB for Transactions
+  mongodb-transaction:
+    image: mongo:6.0
+    container_name: mongodb-transaction
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - /host_mnt/c/Users/Sahar/WebstormProjects/DigitalWallet/transaction-data:/data/db
+    networks:
+      - digital_wallet_network
+
+  # Transaction Service
+  transaction_service_server:
+    container_name: transaction_service_server
+    build:
+      context: ./transactions
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      PORT: 5002
+      MONGO_URI: mongodb://root:root@mongodb-transaction:27017/transactionDb?authSource=admin
+    depends_on:
+      - mongodb-transaction
+    volumes:
+      - ./transactions:/usr/src/app
+    networks:
+      - digital_wallet_network
+
+
+# Define a shared network for communication
+networks:
+  digital_wallet_network:
+    driver: bridge
+
+
+
+
+
 #
 #  # MongoDB for Groups
 #  mongodb-group:
@@ -144,21 +120,7 @@ services:
 #    volumes:
 #      - ./groupDb/db:/groupDb/db
 
-#  # Transaction Service
-#  transaction_service_server:
-#    container_name: transaction_service_server
-#    build:
-#      context: ./transactions
-#      dockerfile: Dockerfile
-#    ports:
-#      - "5002:5002"
-#    environment:
-#      PORT: 5002
-#      MONGO_URI: mongodb://root:root@mongodb-transaction:27017/transactionDb
-#    depends_on:
-#      - mongodb-transaction
-#    volumes:
-#      - ./transactions:/usr/src/app
+
 #
 #  # Notification Service
 #  notification_service_server:

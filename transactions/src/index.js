@@ -1,6 +1,6 @@
-const express = require('express');
-const connectDB = require('./systems/dbConnection');
-const transactionRoutes = require('./routes/transaction.routes');
+import express from "express";
+import connectDB from "./db/dbConnection.js";
+import transactionRoutes from  './routes/transaction.routes.js'
 // const { port } = require('./config');
 
 const app = express();
@@ -8,13 +8,13 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// Connect to MongoDB
-connectDB();
-
 // Routes
-app.use('/transactions', transactionRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 // Start server
-app.listen(port, () => {
-    console.log(`Transactions service running on port ${port}`);
-});
+
+connectDB().then(() => {
+    app.listen(5002, '0.0.0.0',() => {
+        console.log(`Transactions service running on port ${5002}`);
+    });
+})
