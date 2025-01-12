@@ -1,7 +1,6 @@
 import express from "express";
 import connectDB from "./db/dbConnection.js";
 import transactionRoutes from  './routes/transaction.routes.js'
-// const { port } = require('./config');
 
 const app = express();
 

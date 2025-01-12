@@ -1,5 +1,3 @@
-// const { transactionSchema } = require('../../routes/user.routes.schema.js');
-
 
 const validateSchema = (schema) => (req, res, next) => {
     const { error } = schema.validate(req.body, { abortEarly: false });

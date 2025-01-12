@@ -4,7 +4,7 @@ import userRoutes from './users/src/routes/user.routes.js';
 import transactionsRoutes from './transactions/src/routes/transaction.routes.js';
 import groupsRoutes from './groups/src/routes/group.routes.js';
 import notificationsRoutes from './notifications/src/routes/notification.routes.js';
-import logger from './logger.js';
+import logger from './users/src/systems/logger.js';
 
 // Initialize MongoDB Connection
 const initializeDatabase = async () => {
@@ -41,5 +41,5 @@ const startServices = async () => {
 
 // Initialize Database Connection and Start Services
 initializeDatabase().then(() => {
-    startServices().then(r => {});
+    startServices().then(() => {});
 });
