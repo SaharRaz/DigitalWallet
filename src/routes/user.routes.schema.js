@@ -9,4 +9,6 @@ export const createUserSchema = Joi.object({
 export const updateUserSchema = Joi.object({
     name: Joi.string().min(3).max(100),
     balance: Joi.number().min(0),
+    userId: Joi.string().min(1).required(),
 });
+

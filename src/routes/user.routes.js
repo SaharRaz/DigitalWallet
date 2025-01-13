@@ -32,27 +32,27 @@ router.get('/', async (req, res) => {
 });
 
 // Get a user by ID
-router.get('/:id', async (req, res) => {
+router.get('/userId/:userId', async (req, res) => {
     try {
-        const user = await userController.getUserById(req.params.id); // Fetch user by ID
+        const user = await userController.getUserByUserId(req.params.userId);
         if (!user) {
-            logger.warn('GET /users/:id - User not found', { id: req.params.id });
             return res.status(404).json({ error: 'User not found' });
         }
-        logger.info('GET /users/:id - Fetched user by ID', { id: req.params.id });
         res.status(200).json(user);
     } catch (err) {
-        logger.error('GET /users/:id - Error fetching user', { id: req.params.id, error: err.message });
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
 
 
+
 // Update a user by ID
-router.put('/:id', validateSchema(updateUserSchema), async (req, res) => {
+router.put('/updateUser', validateSchema(updateUserSchema), async (req, res) => {
     try {
-        const updatedUser = await userController.updateUser(req.params.id, req.body);
+        const req1 = req.body
+        console.log(req1)
+        const updatedUser = await userController.updateUser(req.body);
         if (!updatedUser) {
             logger.warn('PUT /users/:id - User not found for update', { id: req.params.id });
             return res.status(404).json({ error: 'User not found' });

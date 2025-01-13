@@ -32,10 +32,9 @@
 version: "3.8"
 
 services:
-  # MongoDB Service for Users
   mongodb-user:
     image: mongo:6.0
-    container_name: mongodb
+    container_name: mongodb-user
     ports:
       - "27017:27017"
     environment:
@@ -50,11 +49,10 @@ services:
   user_service_server:
     container_name: user_service_server
     build:
-      context: dockerfiles/users
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/Dockerfile
     ports:
       - "5001:5001"
-      - "9229:9229"
     environment:
       PORT: 5001
       MONGO_URI: mongodb://root:root@mongodb-user:27017/userDb?authSource=admin
@@ -66,6 +64,11 @@ services:
     networks:
       - digital_wallet_network
 
+
+# Define a shared network for communication
+networks:
+  digital_wallet_network:
+    driver: bridge
 
   # MongoDB for Transactions
 #  mongodb-transaction:
@@ -100,10 +103,7 @@ services:
 #      - digital_wallet_network
 
 
-# Define a shared network for communication
-networks:
-  digital_wallet_network:
-    driver: bridge
+
 
 
 

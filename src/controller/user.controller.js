@@ -1,13 +1,14 @@
 import User from '../model/user.model.js';
-import logger from '../systems/logger.js'; // Import the Winston logger
+import logger from '../systems/logger.js';
+import mongoose from "mongoose";
 
 const userController = {
     // Create a new user
     async createUser(data) {
         try {
-            const user = new User(data);
-            const savedUser = await user.save();
-            logger.info('User created successfully', { id: savedUser._id });
+            const {name, balance, userId} = data;
+            const savedUser = await User.create({name, balance, userId});
+            logger.info('User created successfully', { id: savedUser.userId });
             return savedUser;
         } catch (err) {
             logger.error('Error creating user', { error: err.message });
@@ -28,12 +29,28 @@ const userController = {
     },
 
     // Find a user by ID
-    async getUserById(userId) {
+    // async getUserById(userId) {
+    //     try {
+    //         const objectId = new mongoose.Types.ObjectId(userId);
+    //         // Query by the userId field in your schema
+    //         const user = await User.findOne( objectId );
+    //         if (!user) {
+    //             logger.warn('User not found', { userId }); // Log the custom userId
+    //             return null;
+    //         }
+    //         logger.info('Fetched user by userId', { userId });
+    //         return user;
+    //     } catch (err) {
+    //         logger.error('Error fetching user by userId', { error: err.message });
+    //         throw err;
+    //     }
+    // },
+    async getUserByUserId(userId) {
         try {
-            // Query by the userId field in your schema
-            const user = await User.findOne( userId );
+            // Query by the custom userId field
+            const user = await User.findOne({ userId: userId }); // Find by custom userId
             if (!user) {
-                logger.warn('User not found', { userId }); // Log the custom userId
+                logger.warn('User not found', { userId }); // Log if user not found
                 return null;
             }
             logger.info('Fetched user by userId', { userId });
@@ -45,9 +62,10 @@ const userController = {
     },
 
     // Update a user by ID
-    async updateUser(userId, updateData) {
+    async updateUser(data) {
         try {
-            const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+            const {userId,balance} = data
+            const updatedUser = await User.findOneAndUpdate({userId}, {balance},{});
             if (!updatedUser) {
                 logger.warn('User not found for update', { id: userId });
                 return null;
