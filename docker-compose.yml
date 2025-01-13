@@ -50,10 +50,11 @@ services:
   user_service_server:
     container_name: user_service_server
     build:
-      context: ./users
+      context: dockerfiles/users
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
+      - "9229:9229"
     environment:
       PORT: 5001
       MONGO_URI: mongodb://root:root@mongodb-user:27017/userDb?authSource=admin
