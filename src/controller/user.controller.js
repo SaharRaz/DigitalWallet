@@ -1,20 +1,21 @@
 import User from '../model/user.model.js';
 import logger from '../systems/logger.js';
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
 const userController = {
     // Create a new user
+
     async createUser(data) {
         try {
-            const {name, balance, userId} = data;
-            const savedUser = await User.create({name, balance, userId});
-            logger.info('User created successfully', { id: savedUser.userId });
+            const savedUser = await User.create(data); // ✅ Corrected here
+            logger.info('User created successfully', { id: savedUser.userId }); // ✅ Corrected here
             return savedUser;
         } catch (err) {
             logger.error('Error creating user', { error: err.message });
             throw err;
         }
     },
+
 
     // Retrieve all users
     async getAllUsers() {
