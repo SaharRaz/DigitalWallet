@@ -1,87 +1,111 @@
-Users Service - Confluence Documentation
-Overview
-The Users Service is a standalone microservice responsible for managing user-related data in the Digital Wallet system. It handles creation, retrieval, updating, and deletion of user information.
+Users Service
 
-Technologies Used
-Node.js (v18+)
+A standalone microservice in the Digital Wallet system responsible for handling user-related data and operations.
+
+Features
+
+Create, retrieve, update, and delete users
+
+MongoDB integration using Mongoose
+
+Request validation using Joi
+
+Logging with Winston
+
+Technologies
+
+Node.js
+
 Express.js
-Mongoose (MongoDB ODM)
-Docker / Docker Compose
-Winston (Logging)
 
-Folder Structure
-users-service/
-|-- src/
-|   |-- controller/
-|   |   `-- user.controller.js
-|   |-- db/
-|   |   `-- dbConnection.js
-|   |-- model/
-|   |   `-- user.model.js
-|   |-- routes/
-|   |   |-- user.routes.js
-|   |   `-- user.routes.schema.js
-|   |-- systems/
-|   |   |-- logger.js
-|   |   `-- middleware/
-|   |       `-- validateSchema.middleware.js
-|   `-- index.js
-|-- Dockerfile
-|-- package.json
-|-- docker-compose.yml
+MongoDB
+
+Mongoose
+
+Docker
+
+Winston
+
+Joi
+
+Getting Started
+
+Prerequisites
+
+Docker
+
+Node.js (for local development)
+
+Running with Docker
+
+docker-compose up --build
+
+Running Locally (Without Docker)
+
+npm install
+npm run dev
+
+Note: Make sure MongoDB is running locally if not using Docker.
+
+Environment Variables
+
+Set in docker-compose.yml or via .env file:
+
+PORT=5001
+MONGO_URI=mongodb://root:root@mongodb-user:27017/userDb?authSource=admin
 
 API Endpoints
-Base URL
-http://localhost:5001/users
-Create a User
+
+Base URL: http://localhost:5001/users
+
+Create User
+
 POST /
-Body
+
+Body:
+
 {
   "name": "John Doe",
   "balance": 100,
   "userId": "123"
 }
+
 Get All Users
+
 GET /
-Get a User by ID
+
+Get User by ID
+
 GET /:id
-Update a User
+
+Update User
+
 PUT /:id
-Body
+
+Body:
+
 {
-  "balance": 150
+  "balance": 200
 }
-Delete a User
+
+Delete User
+
 DELETE /:id
 
-Environment Variables
-Defined via docker-compose.yml or .env (optional)
-PORT=5001
-MONGO_URI=mongodb://root:root@mongodb-user:27017/userDb?authSource=admin
+Project Structure
 
-MongoDB Schema
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  balance: { type: Number, required: true },
-  userId: { type: String, required: true, unique: true }
-});
-
-Run the Service
-Docker
-docker-compose up --build
-Local (without Docker)
-npm install
-npm run dev
+users-service/
+|-- src/
+|   |-- controller/
+|   |-- db/
+|   |-- model/
+|   |-- routes/
+|   |-- systems/
+|   `-- index.js
+|-- Dockerfile
+|-- docker-compose.yml
+|-- package.json
 
 Logging
-All requests and errors are logged using Winston in logs/ folder.
 
-Notes
-MongoDB must be running (either locally or via Docker).
-Ensure the correct port and credentials are configured.
-
-TODOs
-Add unit testing
-Add Swagger documentation
-Add integration with notification-service
-
+All application logs are handled by Winston and saved to the logs/ directory.
