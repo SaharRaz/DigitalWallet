@@ -2,7 +2,9 @@ import express from 'express';
 import connectDB from './db/dbConnection.js';
 import userRoutes from './routes/user.routes.js';
 import logger from './systems/logger.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
 // Initialize MongoDB Connection
 const initializeDatabase = async () => {
     try {
@@ -20,7 +22,7 @@ const startServices = async () => {
 
     app.use('/users', userRoutes);
 
-    const PORT =5001;
+    const PORT = process.env.PORT || 5001;
 
     // Start an instance of the app for each service
     app.listen(PORT, () => {

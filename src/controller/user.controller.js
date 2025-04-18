@@ -1,20 +1,42 @@
 import User from '../model/user.model.js';
 import logger from '../systems/logger.js';
-// import mongoose from "mongoose";
+import axios from 'axios';
+
+
+const { NOTIFICATION_SERVICE_URL } = process.env;
 
 const userController = {
+    async createUser(data) {
+        const user = new User(data);
+        const saved = await user.save();
+        console.log('🔗 Notification URL:', NOTIFICATION_SERVICE_URL);
+        console.log('🔗 Notification URL:', process.env.NOTIFICATION_SERVICE_URL);
+        // Notify user
+        try {
+            await axios.post(process.env.NOTIFICATION_SERVICE_URL, {
+                userId: saved.userId,
+                message: `🎉 Welcome ${saved.name}! Your account is active.`
+            });
+        } catch (err) {
+            console.error('[Notification Service] Failed:', err.message);
+        }
+
+        return saved;
+    },
+
+// const userController = {
     // Create a new user
 
-    async createUser(data) {
-        try {
-            const savedUser = await User.create(data); // ✅ Corrected here
-            logger.info('User created successfully', { id: savedUser.userId }); // ✅ Corrected here
-            return savedUser;
-        } catch (err) {
-            logger.error('Error creating user', { error: err.message });
-            throw err;
-        }
-    },
+    // async createUser(data) {
+    //     try {
+    //         const savedUser = await User.create(data); // ✅ Corrected here
+    //         logger.info('User created successfully', { id: savedUser.userId }); // ✅ Corrected here
+    //         return savedUser;
+    //     } catch (err) {
+    //         logger.error('Error creating user', { error: err.message });
+    //         throw err;
+    //     }
+    // },
 
 
     // Retrieve all users
