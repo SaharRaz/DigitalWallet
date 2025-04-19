@@ -24,19 +24,6 @@ const userController = {
         return saved;
     },
 
-// const userController = {
-    // Create a new user
-
-    // async createUser(data) {
-    //     try {
-    //         const savedUser = await User.create(data); // ✅ Corrected here
-    //         logger.info('User created successfully', { id: savedUser.userId }); // ✅ Corrected here
-    //         return savedUser;
-    //     } catch (err) {
-    //         logger.error('Error creating user', { error: err.message });
-    //         throw err;
-    //     }
-    // },
 
 
     // Retrieve all users
