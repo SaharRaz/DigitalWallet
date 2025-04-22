@@ -13,10 +13,8 @@ const connectDB = async () => {
         logger.info(`MongoDB connected successfully to: ${mongoURI}`);
     } catch (err) {
         logger.error('MongoDB connection failed:', { error: err.message });
-        // Retry after 5 seconds if the connection fails
         setTimeout(connectDB, 5000);
     }
 };
 
-// Automatically call connectDB to establish the connection
 export default connectDB;
