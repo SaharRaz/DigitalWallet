@@ -5,7 +5,7 @@ import { createUserSchema, updateUserSchema } from '../schema/users.schema.js';
 export default function (controller) {
     const router = express.Router();
 
-    // ✅ Create a new user
+
     router.post('/createUser', validateSchema(createUserSchema), async (req, res) => {
         try {
             const user = await controller.createUser(req.body);
@@ -15,7 +15,7 @@ export default function (controller) {
         }
     });
 
-    // ✅ Get all users
+
     router.get('/getAllUsers', async (req, res) => {
         try {
             const users = await controller.getAllUsers();
@@ -25,7 +25,7 @@ export default function (controller) {
         }
     });
 
-    // ✅ Get a user by userId
+
     router.get('/getUserByUserId/:userId', async (req, res) => {
         try {
             const user = await controller.getUserByUserId(req.params.userId);
@@ -36,7 +36,7 @@ export default function (controller) {
         }
     });
 
-    // ✅ Update a user
+
     router.put('/updateUser', validateSchema(updateUserSchema), async (req, res) => {
         try {
             const updated = await controller.updateUser(req.body);
@@ -47,7 +47,7 @@ export default function (controller) {
         }
     });
 
-    // ✅ Delete a user by Mongo _id
+
     router.delete('/deleteUser/:id', async (req, res) => {
         try {
             const deleted = await controller.deleteUser(req.params.id);

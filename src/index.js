@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import connectDB from './db/dbConnection.js';
 import userRoutes from './routes/users.routes.js';
 import UsersController from './controller/users.controller.js';
-
 import User from './model/users.model.js';
 import logger from './middleware/logger.js';
 import axiosClient from './systems/axiosClient.js';
@@ -13,7 +12,6 @@ dotenv.config();
 const start = async () => {
     await connectDB();
 
-    // ✅ Construct controller once here
     const usersController = new UsersController(
         User,
         logger,
