@@ -2,19 +2,21 @@ import express from 'express';
 import validateSchema from '../validations/users.validateSchema.middleware.js';
 import { createUserSchema, updateUserSchema } from '../schema/users.schema.js';
 
-export default function (controller) {
+
+export default function createRoutes(controller) {
     const router = express.Router();
 
 
     router.post('/createUser', validateSchema(createUserSchema), async (req, res) => {
         try {
+            console.log('[Route] req.body right before calling controller:', req.body);
             const user = await controller.createUser(req.body);
             res.status(201).json(user);
         } catch (err) {
+            console.error('[Route] ERROR before controller:', err);
             res.status(500).json({ error: err.message });
         }
     });
-
 
     router.get('/getAllUsers', async (req, res) => {
         try {
@@ -24,7 +26,6 @@ export default function (controller) {
             res.status(500).json({ error: err.message });
         }
     });
-
 
     router.get('/getUserByUserId/:userId', async (req, res) => {
         try {
@@ -36,7 +37,6 @@ export default function (controller) {
         }
     });
 
-
     router.put('/updateUser', validateSchema(updateUserSchema), async (req, res) => {
         try {
             const updated = await controller.updateUser(req.body);
@@ -46,7 +46,6 @@ export default function (controller) {
             res.status(500).json({ error: err.message });
         }
     });
-
 
     router.delete('/deleteUser/:id', async (req, res) => {
         try {
