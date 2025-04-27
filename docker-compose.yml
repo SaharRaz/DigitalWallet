@@ -1,5 +1,3 @@
-
-
 version: "3.8"
 
 services:
@@ -12,11 +10,10 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - /host_mnt/c/Users/Sahar/WebstormProjects/DigitalWallet/mongo-data:/data/db
+      - ./mongo-data:/data/db
     networks:
       - digital_wallet_network
 
-#   User Service
   user_service_server:
     container_name: user_service_server
     build:
@@ -35,8 +32,6 @@ services:
     networks:
       - digital_wallet_network
 
-
-# Define a shared network for communication
 networks:
   digital_wallet_network:
     driver: bridge

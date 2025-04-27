@@ -9,11 +9,12 @@
     "debug-dev": "nodemon --inspect src/index.js"
   },
   "dependencies": {
+    "awilix": "^12.0.5",
     "axios": "^1.8.4",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "joi": "^17.13.3",
-    "mongoose": "^7.8.3",
+    "mongoose": "8.9.5",
     "pnpm": "^10.7.1",
     "winston": "^3.3.3"
   },
